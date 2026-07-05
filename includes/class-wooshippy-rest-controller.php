@@ -76,4 +76,3 @@ class Wooshippy_Rest_Controller
         return rest_ensure_response($result);
     }
 }
-

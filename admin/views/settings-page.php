@@ -20,6 +20,26 @@ if (!defined('ABSPATH')) {
         <table class="form-table" role="presentation">
             <tr>
                 <th scope="row">
+                    <label for="wooshippy_provider"><?php esc_html_e('Tracking Provider', 'wooshippy'); ?></label>
+                </th>
+                <td>
+                    <select
+                        id="wooshippy_provider"
+                        name="<?php echo esc_attr(Wooshippy_Settings::OPTION_NAME); ?>[provider]"
+                    >
+                        <?php foreach ($this->settings->providers() as $provider_key => $provider_label) : ?>
+                            <option value="<?php echo esc_attr($provider_key); ?>" <?php selected($options['provider'], $provider_key); ?>>
+                                <?php echo esc_html($provider_label); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <p class="description">
+                        <?php esc_html_e('Use Generic for any vendor with a JSON tracking endpoint. EasyPost and Shippo have built-in request adapters.', 'wooshippy'); ?>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
                     <label for="wooshippy_api_base_url"><?php esc_html_e('API Base URL', 'wooshippy'); ?></label>
                 </th>
                 <td>
@@ -31,11 +51,32 @@ if (!defined('ABSPATH')) {
                         value="<?php echo esc_attr($options['api_base_url']); ?>"
                         placeholder="https://shipping.example.com/api/v3"
                     />
+                    <p class="description">
+                        <?php esc_html_e('Required for Generic and Stallion-compatible APIs. EasyPost and Shippo use their official API hosts.', 'wooshippy'); ?>
+                    </p>
                 </td>
             </tr>
             <tr>
                 <th scope="row">
-                    <label for="wooshippy_api_token"><?php esc_html_e('API Token', 'wooshippy'); ?></label>
+                    <label for="wooshippy_generic_endpoint_pattern"><?php esc_html_e('Generic Endpoint Pattern', 'wooshippy'); ?></label>
+                </th>
+                <td>
+                    <input
+                        type="text"
+                        class="regular-text"
+                        id="wooshippy_generic_endpoint_pattern"
+                        name="<?php echo esc_attr(Wooshippy_Settings::OPTION_NAME); ?>[generic_endpoint_pattern]"
+                        value="<?php echo esc_attr($options['generic_endpoint_pattern']); ?>"
+                        placeholder="{api_base_url}/shipments/{tracking_number}/track"
+                    />
+                    <p class="description">
+                        <?php esc_html_e('Used by Generic API mode. Supported tokens: {api_base_url}, {tracking_number}.', 'wooshippy'); ?>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    <label for="wooshippy_api_token"><?php esc_html_e('API Key / Token', 'wooshippy'); ?></label>
                 </th>
                 <td>
                     <input
@@ -46,6 +87,9 @@ if (!defined('ABSPATH')) {
                         value="<?php echo esc_attr($options['api_token']); ?>"
                         autocomplete="off"
                     />
+                    <p class="description">
+                        <?php esc_html_e('Generic and Stallion-compatible use Bearer auth. EasyPost uses Basic auth. Shippo uses ShippoToken auth.', 'wooshippy'); ?>
+                    </p>
                 </td>
             </tr>
             <tr>
@@ -114,4 +158,3 @@ if (!defined('ABSPATH')) {
         <?php submit_button(); ?>
     </form>
 </div>
-

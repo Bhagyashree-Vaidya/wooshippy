@@ -30,9 +30,20 @@ if (!defined('ABSPATH')) {
                 <?php esc_html_e('Track', 'wooshippy'); ?>
             </button>
         </div>
+        <label class="wooshippy-tracking__label wooshippy-tracking__label--optional" for="wooshippy-carrier">
+            <?php esc_html_e('Carrier', 'wooshippy'); ?>
+            <span><?php esc_html_e('optional for most providers', 'wooshippy'); ?></span>
+        </label>
+        <input
+            class="wooshippy-tracking__input"
+            type="text"
+            id="wooshippy-carrier"
+            name="carrier"
+            autocomplete="off"
+            placeholder="<?php esc_attr_e('USPS, UPS, CanadaPost, FedEx...', 'wooshippy'); ?>"
+        />
     </form>
 
     <div class="wooshippy-tracking__message" data-wooshippy-tracking-message hidden></div>
     <div class="wooshippy-tracking__result" data-wooshippy-tracking-result hidden></div>
 </div>
-

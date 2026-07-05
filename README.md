@@ -2,17 +2,20 @@
 
 A WordPress/WooCommerce plugin for branded shipment tracking, delivery visibility, and shipment exception alerts.
 
-##Problem
+## Problem
+
 Small and mid-sized WooCommerce merchants often rely on carrier portals, manual tracking links, or disconnected fulfillment tools.
 
-##Proposed Product
+## Proposed Product
+
 Build a WooCommerce shipment tracking plugin that lets merchants:
-Add tracking numbers and carriers to WooCommerce orders.
-Display branded tracking pages to customers.
-Fetch live tracking events from a configured shipping API.
-Send delivery status emails for shipped, in transit, out for delivery, delivered, delayed, and exception states.
-Alert store owners when shipments appear stuck or need attention.
-Use shortcodes or blocks to add a public tracking form anywhere on the site.
+
+- Add tracking numbers and carriers to WooCommerce orders.
+- Display branded tracking pages to customers.
+- Fetch live tracking events from a configured shipping API.
+- Send delivery status emails for shipped, in transit, out for delivery, delivered, delayed, and exception states.
+- Alert store owners when shipments appear stuck or need attention.
+- Use shortcodes or blocks to add a public tracking form anywhere on the site.
 
 ## Overview
 
@@ -22,7 +25,8 @@ The plugin is designed to reduce "Where is my order?" support requests by connec
 
 ## Current MVP
 
-- WordPress admin settings for API base URL, API token, default carrier, tracking page URL, and cache duration.
+- WordPress admin settings for provider, API base URL, API key/token, default carrier, tracking page URL, and cache duration.
+- Provider adapters for Generic JSON API, Stallion-compatible APIs, EasyPost, and Shippo.
 - Public `[shipment_tracking]` shortcode.
 - REST endpoint at `/wp-json/wooshippy/v1/track`.
 - Nonce-protected browser requests.
@@ -72,8 +76,9 @@ wooshippy/
 1. Copy the `wooshippy` folder to `wp-content/plugins/`.
 2. Activate **Wooshippy** in WordPress.
 3. Go to **Settings > Wooshippy**.
-4. Add your shipping API base URL and API token.
-5. Create a tracking page and add:
+4. Select your tracking provider.
+5. Add your provider API key/token and any required endpoint settings.
+6. Create a tracking page and add:
 
 ```text
 [shipment_tracking]
@@ -99,28 +104,82 @@ Optional future shortcodes:
 Current settings:
 
 - API base URL.
-- API token.
+- API key/token.
+- Generic endpoint pattern.
 - Default carrier.
 - Tracking page URL.
 - Cache duration.
 - Enable customer order tracking display.
 
-## API Contract
+## Where Merchants Get API Keys
 
-The first API client expects a tracking endpoint that looks like:
+Wooshippy is not the courier API. It is the tracking layer that connects a store to the shipping API the merchant already uses.
+
+API keys usually come from:
+
+- A shipping platform such as EasyPost, Shippo, AfterShip, ShipStation, Easyship, or Stallion Express.
+- A direct carrier account such as UPS, FedEx, DHL, USPS, or Canada Post.
+- A fulfillment provider or 3PL that exposes shipment tracking data.
+
+The easiest first setup is usually a shipping platform API because one account can normalize multiple carriers.
+
+## Provider Modes
+
+### Generic JSON API
+
+Use this for any vendor that exposes a simple JSON tracking endpoint. Configure:
+
+- API base URL.
+- API key/token.
+- Endpoint pattern.
+
+Default pattern:
 
 ```text
-GET {API_BASE_URL}/shipments/{tracking_number}/track
+{api_base_url}/shipments/{tracking_number}/track
 ```
 
-The request includes:
+Generic mode sends:
 
 ```text
 Authorization: Bearer {API_TOKEN}
 Accept: application/json
 ```
 
-The response is normalized from a shape similar to:
+### Stallion-Compatible API
+
+Use this for APIs that match the existing Stallion-style tracking shape:
+
+```text
+GET {API_BASE_URL}/shipments/{tracking_number}/track
+Authorization: Bearer {API_TOKEN}
+```
+
+### EasyPost
+
+Uses EasyPost standalone tracker creation:
+
+```text
+POST https://api.easypost.com/v2/trackers
+Authorization: Basic base64("{EASYPOST_API_KEY}:")
+```
+
+EasyPost can auto-detect many carriers, but providing a carrier improves accuracy.
+
+### Shippo
+
+Uses Shippo tracking status lookup:
+
+```text
+GET https://api.goshippo.com/tracks/{carrier}/{tracking_number}
+Authorization: ShippoToken {SHIPPO_API_TOKEN}
+```
+
+Shippo requires a carrier value for this lookup.
+
+## Generic Response Shape
+
+Generic and Stallion-compatible responses are normalized from a shape similar to:
 
 ```json
 {

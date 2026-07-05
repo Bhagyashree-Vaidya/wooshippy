@@ -3,11 +3,21 @@
     var events = Array.isArray(data.events) ? data.events : [];
     var html = '<div class="wooshippy-tracking__card">';
 
+    html += '<div class="wooshippy-tracking__card-header">';
+    html += '<div>';
+    html += '<span class="wooshippy-tracking__eyebrow">Shipment status</span>';
     html += '<h3>' + escapeHtml(data.status || 'Tracking found') + '</h3>';
+    html += '</div>';
+    html += '<span class="wooshippy-tracking__badge">' + escapeHtml(data.carrier || 'Tracking') + '</span>';
+    html += '</div>';
     html += '<p><strong>Tracking:</strong> ' + escapeHtml(data.tracking_number || '') + '</p>';
 
     if (data.carrier) {
       html += '<p><strong>Carrier:</strong> ' + escapeHtml(data.carrier) + '</p>';
+    }
+
+    if (data.public_url) {
+      html += '<p><a href="' + escapeHtml(data.public_url) + '" target="_blank" rel="noopener noreferrer">Open carrier tracking page</a></p>';
     }
 
     if (events.length) {
@@ -70,8 +80,9 @@
             'Content-Type': 'application/json',
             'X-WP-Nonce': wooshippyTracking.nonce
           },
-          body: JSON.stringify({
-            tracking_number: trackingNumber
+        body: JSON.stringify({
+            tracking_number: trackingNumber,
+            carrier: form.elements.carrier ? form.elements.carrier.value.trim() : ''
           })
         })
           .then(function (response) {
@@ -93,4 +104,3 @@
     });
   });
 })();
-

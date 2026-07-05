@@ -59,6 +59,17 @@ class Wooshippy_Tracking_Service
 
     private function normalize_response(array $response, $tracking_number, $carrier)
     {
+        $provider = $response['_wooshippy_provider'] ?? 'generic';
+        unset($response['_wooshippy_provider']);
+
+        if ('easypost' === $provider) {
+            return $this->normalize_easypost_response($response, $tracking_number, $carrier);
+        }
+
+        if ('shippo' === $provider) {
+            return $this->normalize_shippo_response($response, $tracking_number, $carrier);
+        }
+
         $details = isset($response['details']) && is_array($response['details']) ? $response['details'] : [];
         $events = isset($response['events']) && is_array($response['events']) ? $response['events'] : [];
 
@@ -74,6 +85,41 @@ class Wooshippy_Tracking_Service
         ];
     }
 
+    private function normalize_easypost_response(array $response, $tracking_number, $carrier)
+    {
+        $events = isset($response['tracking_details']) && is_array($response['tracking_details']) ? $response['tracking_details'] : [];
+        $carrier_detail = isset($response['carrier_detail']) && is_array($response['carrier_detail']) ? $response['carrier_detail'] : [];
+
+        return [
+            'success' => true,
+            'tracking_number' => $response['tracking_code'] ?? $tracking_number,
+            'carrier' => $response['carrier'] ?? $carrier,
+            'status' => $response['status'] ?? '',
+            'destination' => $carrier_detail['destination_location'] ?? '',
+            'service' => $carrier_detail['service'] ?? '',
+            'events' => array_values(array_map([$this, 'normalize_easypost_event'], $events)),
+            'public_url' => $response['public_url'] ?? '',
+            'raw' => $response,
+        ];
+    }
+
+    private function normalize_shippo_response(array $response, $tracking_number, $carrier)
+    {
+        $tracking_status = isset($response['tracking_status']) && is_array($response['tracking_status']) ? $response['tracking_status'] : [];
+        $history = isset($response['tracking_history']) && is_array($response['tracking_history']) ? $response['tracking_history'] : [];
+
+        return [
+            'success' => true,
+            'tracking_number' => $response['tracking_number'] ?? $tracking_number,
+            'carrier' => $response['carrier'] ?? $carrier,
+            'status' => $tracking_status['status'] ?? ($response['tracking_status'] ?? ''),
+            'destination' => '',
+            'service' => '',
+            'events' => array_values(array_map([$this, 'normalize_shippo_event'], $history)),
+            'raw' => $response,
+        ];
+    }
+
     private function normalize_event($event)
     {
         $event = is_array($event) ? $event : [];
@@ -85,5 +131,44 @@ class Wooshippy_Tracking_Service
             'carrier' => isset($event['carrier']) ? sanitize_text_field($event['carrier']) : '',
         ];
     }
-}
 
+    private function normalize_easypost_event($event)
+    {
+        $event = is_array($event) ? $event : [];
+        $location = isset($event['tracking_location']) && is_array($event['tracking_location'])
+            ? array_filter([
+                $event['tracking_location']['city'] ?? '',
+                $event['tracking_location']['state'] ?? '',
+                $event['tracking_location']['country'] ?? '',
+                $event['tracking_location']['zip'] ?? '',
+            ])
+            : [];
+
+        return [
+            'status' => sanitize_text_field($event['message'] ?? ($event['status'] ?? '')),
+            'datetime' => sanitize_text_field($event['datetime'] ?? ''),
+            'location' => sanitize_text_field(implode(', ', $location)),
+            'carrier' => sanitize_text_field($event['source'] ?? ''),
+        ];
+    }
+
+    private function normalize_shippo_event($event)
+    {
+        $event = is_array($event) ? $event : [];
+        $location = isset($event['location']) && is_array($event['location'])
+            ? array_filter([
+                $event['location']['city'] ?? '',
+                $event['location']['state'] ?? '',
+                $event['location']['country'] ?? '',
+                $event['location']['zip'] ?? '',
+            ])
+            : [];
+
+        return [
+            'status' => sanitize_text_field($event['status_details'] ?? ($event['status'] ?? '')),
+            'datetime' => sanitize_text_field($event['status_date'] ?? ''),
+            'location' => sanitize_text_field(implode(', ', $location)),
+            'carrier' => '',
+        ];
+    }
+}
