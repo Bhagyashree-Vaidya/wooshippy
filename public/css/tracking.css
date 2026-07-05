@@ -1,0 +1,64 @@
+.wooshippy-tracking {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  max-width: 720px;
+  padding: 24px;
+}
+
+.wooshippy-tracking__title {
+  margin: 0 0 16px;
+}
+
+.wooshippy-tracking__label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.wooshippy-tracking__controls {
+  display: flex;
+  gap: 12px;
+}
+
+.wooshippy-tracking__input {
+  flex: 1;
+  min-width: 0;
+}
+
+.wooshippy-tracking__button {
+  cursor: pointer;
+}
+
+.wooshippy-tracking__message {
+  margin-top: 16px;
+}
+
+.wooshippy-tracking__card {
+  margin-top: 20px;
+}
+
+.wooshippy-tracking__events {
+  margin: 16px 0 0;
+  padding-left: 20px;
+}
+
+.wooshippy-tracking__events li {
+  margin-bottom: 12px;
+}
+
+.wooshippy-tracking__events span,
+.wooshippy-tracking__events small {
+  display: block;
+}
+
+@media (max-width: 600px) {
+  .wooshippy-tracking__controls {
+    display: block;
+  }
+
+  .wooshippy-tracking__button {
+    margin-top: 12px;
+    width: 100%;
+  }
+}
+

@@ -1,6 +1,6 @@
-# WooCommerce Shipment Tracking
+# Wooshippy
 
-A WordPress/WooCommerce plugin for branded shipment tracking, delivery updates, and shipment exception alerts.
+A WordPress/WooCommerce plugin for branded shipment tracking, delivery visibility, and shipment exception alerts.
 
 ##Problem
 Small and mid-sized WooCommerce merchants often rely on carrier portals, manual tracking links, or disconnected fulfillment tools.
@@ -16,77 +16,72 @@ Use shortcodes or blocks to add a public tracking form anywhere on the site.
 
 ## Overview
 
-WooCommerce Shipment Tracking helps ecommerce merchants give customers a better post-purchase experience. Instead of sending customers to carrier websites, stores can show shipment status directly on their own branded tracking page.
+Wooshippy helps ecommerce merchants give customers a better post-purchase experience. Instead of sending customers to carrier websites, stores can show shipment status directly on their own branded tracking page.
 
 The plugin is designed to reduce "Where is my order?" support requests by connecting WooCommerce orders with carrier tracking data.
 
+## Current MVP
+
+- WordPress admin settings for API base URL, API token, default carrier, tracking page URL, and cache duration.
+- Public `[shipment_tracking]` shortcode.
+- REST endpoint at `/wp-json/wooshippy/v1/track`.
+- Nonce-protected browser requests.
+- Server-side API proxy so the API token is never exposed in the browser.
+- Basic tracking result normalization.
+- Basic transient caching for tracking lookups.
+- WooCommerce order tracking number and carrier meta box.
+- Tracking summary on WooCommerce customer order pages.
+- Vanilla JavaScript and CSS, with no build step required.
+
 ## Planned Features
 
-- WooCommerce order tracking fields.
-- Public tracking form shortcode.
-- Branded customer tracking page.
-- Secure server-side shipping API proxy.
-- Shipment status normalization.
-- Delivery status emails.
+- Customer delivery status emails.
 - Merchant alerts for stuck or failed shipments.
-- Tracking result caching.
-- Carrier/API configuration from WordPress admin.
+- Tracking link injection into WooCommerce emails.
+- Multiple carrier/API integrations.
+- Branded tracking page customization.
 - Optional shipping-rate calculator.
+- Shipment analytics.
 
-## MVP Features
-
-The first version will focus on a narrow, useful workflow:
-
-- Admin settings for API base URL and token.
-- Tracking number and carrier fields on WooCommerce orders.
-- `[shipment_tracking]` shortcode for a public tracking form.
-- Customer-facing tracking results.
-- Secure AJAX or REST endpoint with nonce validation.
-- API token stored server-side only.
-- Basic cache for tracking lookups.
-
-## Existing Starting Point
-
-This project is based on an existing WordPress plugin prototype that includes:
-
-- API token and base URL settings.
-- Shipping rates shortcode.
-- Shipment tracking shortcode.
-- Static comparison table shortcodes.
-- Vue-based public tracking and rate calculator UI.
-- PHP syntax-valid WordPress plugin structure.
-
-The current prototype should be treated as a starting point, not production-ready software.
-
-## Recommended Architecture
+## Repository Structure
 
 ```text
-woocommerce-shipment-tracking/
-├── woocommerce-shipment-tracking.php
+wooshippy/
+├── wooshippy.php
 ├── includes/
-│   ├── class-plugin.php
-│   ├── class-settings.php
-│   ├── class-api-client.php
-│   ├── class-tracking-service.php
-│   ├── class-woocommerce-orders.php
-│   └── class-shortcodes.php
+│   ├── class-wooshippy-plugin.php
+│   ├── class-wooshippy-settings.php
+│   ├── class-wooshippy-api-client.php
+│   ├── class-wooshippy-tracking-service.php
+│   ├── class-wooshippy-rest-controller.php
+│   ├── class-wooshippy-shortcodes.php
+│   └── class-wooshippy-woocommerce-orders.php
 ├── admin/
-│   ├── class-admin.php
+│   ├── class-wooshippy-admin.php
 │   └── views/
 ├── public/
-│   ├── class-public.php
 │   ├── css/
 │   ├── js/
 │   └── views/
-├── assets/
 ├── languages/
-├── tests/
 └── README.md
+```
+
+## Installation
+
+1. Copy the `wooshippy` folder to `wp-content/plugins/`.
+2. Activate **Wooshippy** in WordPress.
+3. Go to **Settings > Wooshippy**.
+4. Add your shipping API base URL and API token.
+5. Create a tracking page and add:
+
+```text
+[shipment_tracking]
 ```
 
 ## Shortcodes
 
-Planned shortcode:
+Current shortcode:
 
 ```text
 [shipment_tracking]
@@ -101,40 +96,77 @@ Optional future shortcodes:
 
 ## Admin Settings
 
-Initial settings:
+Current settings:
 
 - API base URL.
 - API token.
 - Default carrier.
 - Tracking page URL.
 - Cache duration.
-- Enable customer emails.
-- Enable merchant alerts.
+- Enable customer order tracking display.
+
+## API Contract
+
+The first API client expects a tracking endpoint that looks like:
+
+```text
+GET {API_BASE_URL}/shipments/{tracking_number}/track
+```
+
+The request includes:
+
+```text
+Authorization: Bearer {API_TOKEN}
+Accept: application/json
+```
+
+The response is normalized from a shape similar to:
+
+```json
+{
+  "success": true,
+  "status": "In Transit",
+  "details": {
+    "tracking": "ABC123",
+    "destination": "Toronto, ON",
+    "service": "Tracked Packet"
+  },
+  "events": [
+    {
+      "status": "Accepted",
+      "datetime": "2026-07-05T10:00:00Z",
+      "location": "Toronto, ON",
+      "carrier": "Stallion Express"
+    }
+  ]
+}
+```
 
 ## WooCommerce Integration
 
-Planned order features:
+Current order features:
 
 - Tracking number field.
 - Carrier field.
-- Shipment status field.
-- Last synced timestamp.
-- Tracking events stored or cached.
-- Tracking link in customer emails.
 - Tracking section in My Account order details.
 
-## Security Requirements
+## Security Notes
 
-Before production release, the plugin must:
+The current MVP already:
 
 - Validate nonces for public AJAX or REST requests.
 - Sanitize all user input.
 - Escape all output.
 - Keep API tokens server-side only.
-- Rate-limit public tracking lookups.
 - Cache tracking API responses.
 - Use WordPress HTTP APIs for remote requests.
-- Avoid loading unnecessary external scripts.
+
+Before production release, add:
+
+- Public lookup rate limiting.
+- Stronger API response validation.
+- WooCommerce HPOS compatibility testing.
+- Automated tests.
 - Provide clear disclosure for external API calls.
 
 ## Development Requirements
@@ -213,4 +245,3 @@ The goal is to help merchants reduce support tickets, keep customers informed, a
 ## License
 
 GPL-2.0-or-later is recommended for WordPress ecosystem compatibility.
-
