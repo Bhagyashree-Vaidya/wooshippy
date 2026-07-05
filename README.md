@@ -2,6 +2,18 @@
 
 A WordPress/WooCommerce plugin for branded shipment tracking, delivery updates, and shipment exception alerts.
 
+##Problem
+Small and mid-sized WooCommerce merchants often rely on carrier portals, manual tracking links, or disconnected fulfillment tools.
+
+##Proposed Product
+Build a WooCommerce shipment tracking plugin that lets merchants:
+Add tracking numbers and carriers to WooCommerce orders.
+Display branded tracking pages to customers.
+Fetch live tracking events from a configured shipping API.
+Send delivery status emails for shipped, in transit, out for delivery, delivered, delayed, and exception states.
+Alert store owners when shipments appear stuck or need attention.
+Use shortcodes or blocks to add a public tracking form anywhere on the site.
+
 ## Overview
 
 WooCommerce Shipment Tracking helps ecommerce merchants give customers a better post-purchase experience. Instead of sending customers to carrier websites, stores can show shipment status directly on their own branded tracking page.
