@@ -43,6 +43,12 @@ The plugin is designed to reduce "Where is my order?" support requests by connec
 - Tracking summary on WooCommerce customer order pages.
 - Vanilla JavaScript and CSS, with no build step required.
 
+## MVP Status and Collaboration
+
+Wooshippy is an early MVP, not a finished plug-and-play commercial product yet. The current goal is to validate the core workflow: connect a merchant-owned shipping API, save tracking details on WooCommerce orders, and show customers a branded tracking page. To commercialise it, the next steps are real WooCommerce cloud testing, real EasyPost/Shippo/Generic provider validation, stronger onboarding, support documentation, and packaging for WordPress.org or Woo Marketplace.
+
+We are looking for collaborators who can help test the plugin with real stores, connect shipping-provider APIs, improve the WooCommerce workflow, polish the customer tracking experience, and shape Wooshippy into a reliable product for small business owners.
+
 ## Planned Features
 
 - Customer delivery status emails.
