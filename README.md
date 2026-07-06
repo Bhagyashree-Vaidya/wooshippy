@@ -1,4 +1,4 @@
-# Wooshippy
+# Wooshippy WordPress Plugin 
 
 A WordPress/WooCommerce plugin for branded shipment tracking, delivery visibility, and shipment exception alerts.
 
@@ -16,6 +16,12 @@ Build a WooCommerce shipment tracking plugin that lets merchants:
 - Send delivery status emails for shipped, in transit, out for delivery, delivered, delayed, and exception states.
 - Alert store owners when shipments appear stuck or need attention.
 - Use shortcodes or blocks to add a public tracking form anywhere on the site.
+
+## MVP Status and Collaboration
+
+Wooshippy is an early MVP, not a finished plug-and-play commercial product yet. The current goal is to validate the core workflow: connect a merchant-owned shipping API, save tracking details on WooCommerce orders, and show customers a branded tracking page. To commercialise it, the next steps are real WooCommerce cloud testing, real EasyPost/Shippo/Generic provider validation, stronger onboarding, support documentation, and packaging for WordPress.org or Woo Marketplace.
+
+We are looking for collaborators who can help test the plugin with real stores, connect shipping-provider APIs, improve the WooCommerce workflow, polish the customer tracking experience, and shape Wooshippy into a reliable product for small business owners.
 
 ## Overview
 
