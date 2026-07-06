@@ -2,6 +2,15 @@
 
 A WordPress/WooCommerce plugin for branded shipment tracking, delivery visibility, and shipment exception alerts.
 
+
+
+
+https://github.com/user-attachments/assets/b026b7e0-9ea9-49f7-9a37-eb263da96368
+
+
+
+
+
 ## Problem
 
 Small and mid-sized WooCommerce merchants often rely on carrier portals, manual tracking links, or disconnected fulfillment tools.
