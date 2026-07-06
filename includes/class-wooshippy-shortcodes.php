@@ -56,6 +56,7 @@ class Wooshippy_Shortcodes
                 'messages' => [
                     'missingTrackingNumber' => __('Enter a tracking number.', 'wooshippy'),
                     'requestFailed' => __('Tracking lookup failed. Please try again.', 'wooshippy'),
+                    'loading' => __('Loading tracking details...', 'wooshippy'),
                 ],
             ]
         );
