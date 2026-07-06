@@ -1,7 +1,7 @@
 # Wooshippy WordPress Plugin 
 
 A WordPress/WooCommerce plugin for branded shipment tracking, delivery visibility, and shipment exception alerts.
-
+The code can be use for Shopify app, Wix app, or to build Squarespace extension.
 
 
 
