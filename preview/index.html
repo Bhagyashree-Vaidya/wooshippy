@@ -6,142 +6,95 @@
   <title>Wooshippy Tracking Preview</title>
   <link rel="stylesheet" href="../public/css/tracking.css">
   <style>
-    body {
-      background: #f8fafc;
-      color: #0f172a;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 48px 20px;
-    }
-
-    main {
-      margin: 0 auto;
-      max-width: 960px;
-    }
-
-    .preview-header {
-      margin-bottom: 24px;
-      max-width: 720px;
-    }
-
-    .preview-header h1 {
-      font-size: 40px;
-      line-height: 1.1;
-      margin: 0 0 10px;
-    }
-
-    .preview-header p {
-      color: #475569;
-      font-size: 18px;
-      margin: 0;
-    }
+    body { background:#050505; color:#fff; font-family:"Gilroy", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin:0; min-height:100vh; padding:42px 22px; }
+    main { margin:0 auto; max-width:1180px; }
+    .preview-header { align-items:flex-end; display:flex; gap:24px; justify-content:space-between; margin-bottom:28px; }
+    .preview-header__eyebrow { color:#ffcd00; display:block; font-size:13px; font-weight:900; letter-spacing:.14em; margin-bottom:12px; text-transform:uppercase; }
+    .preview-header h1 { font-size:clamp(42px,7vw,82px); letter-spacing:-.07em; line-height:.92; margin:0; max-width:800px; }
+    .preview-header p { color:#b7b7b7; font-size:19px; line-height:1.55; margin:14px 0 0; max-width:720px; }
+    .preview-header__badge { background:#ffcd00; border-radius:999px; color:#050505; flex:0 0 auto; font-weight:950; padding:13px 18px; }
+    @media (max-width:760px){ body{padding:24px 12px}.preview-header{display:block}.preview-header__badge{display:inline-block;margin-top:18px} }
   </style>
 </head>
 <body>
   <main>
     <div class="preview-header">
-      <h1>Track your shipment</h1>
-      <p>This is a local preview of the customer-facing Wooshippy tracking widget.</p>
+      <div>
+        <span class="preview-header__eyebrow">Wooshippy MVP UI</span>
+        <h1>Delivery tracking with app-store polish.</h1>
+        <p>Yellow/black delivery-app styling, placeholder service actions, and a Google Maps-style route preview for the commercial MVP direction.</p>
+      </div>
+      <span class="preview-header__badge">Collaborator-ready concept</span>
     </div>
 
-    <div class="wooshippy-tracking" data-wooshippy-tracking>
-      <form class="wooshippy-tracking__form" data-wooshippy-tracking-form>
-        <h2 class="wooshippy-tracking__title">Where is my order?</h2>
+    <section class="wooshippy-tracking" data-wooshippy-tracking aria-labelledby="wooshippy-tracking-title">
+      <div class="wooshippy-app-card">
+        <div class="wooshippy-app-card__hero">
+          <div class="wooshippy-app-card__topbar">
+            <div>
+              <span class="wooshippy-tracking__kicker">Wooshippy tracking</span>
+              <h2 class="wooshippy-tracking__title" id="wooshippy-tracking-title">Out for delivery</h2>
+              <p class="wooshippy-tracking__intro">Branded shipment tracking for your store, powered by the courier APIs merchants already use.</p>
+            </div>
+            <span class="wooshippy-app-card__bell" aria-hidden="true">↗</span>
+          </div>
 
-        <label class="wooshippy-tracking__label" for="wooshippy-tracking-number">
-          Tracking number
-        </label>
-        <div class="wooshippy-tracking__controls">
-          <input
-            class="wooshippy-tracking__input"
-            type="text"
-            id="wooshippy-tracking-number"
-            name="tracking_number"
-            autocomplete="off"
-            value="WSHIPPY12345"
-            required
-          >
-          <button class="wooshippy-tracking__button" type="submit">
-            Track
-          </button>
+          <div class="wooshippy-map-preview" aria-label="Google Maps route preview placeholder">
+            <div class="wooshippy-map-preview__grid" aria-hidden="true"></div>
+            <div class="wooshippy-map-preview__road wooshippy-map-preview__road--one" aria-hidden="true"></div>
+            <div class="wooshippy-map-preview__road wooshippy-map-preview__road--two" aria-hidden="true"></div>
+            <div class="wooshippy-map-preview__route" aria-hidden="true"></div>
+            <span class="wooshippy-map-preview__pin wooshippy-map-preview__pin--start" aria-hidden="true"></span>
+            <span class="wooshippy-map-preview__pin wooshippy-map-preview__pin--mid" aria-hidden="true"></span>
+            <span class="wooshippy-map-preview__pin wooshippy-map-preview__pin--end" aria-hidden="true"></span>
+            <span class="wooshippy-map-preview__label wooshippy-map-preview__label--start">Warehouse</span>
+            <span class="wooshippy-map-preview__label wooshippy-map-preview__label--end">Customer</span>
+            <span class="wooshippy-map-preview__badge">Google Maps placeholder</span>
+          </div>
+
+          <div class="wooshippy-package-strip" aria-hidden="true">
+            <span class="wooshippy-package-strip__box">📦</span>
+            <div><strong>34AP123456789</strong><span>ETA, route, and live courier details are planned MVP features.</span></div>
+          </div>
         </div>
 
-        <label class="wooshippy-tracking__label wooshippy-tracking__label--optional" for="wooshippy-carrier">
-          Carrier
-          <span>optional for most providers</span>
-        </label>
-        <input
-          class="wooshippy-tracking__input"
-          type="text"
-          id="wooshippy-carrier"
-          name="carrier"
-          autocomplete="off"
-          value="Canada Post"
-        >
-      </form>
+        <div class="wooshippy-app-card__body">
+          <div class="wooshippy-feature-row" aria-label="Planned tracking features">
+            <span><strong>📮</strong>Send parcel</span>
+            <span><strong>🔎</strong>Track item</span>
+            <span><strong>📍</strong>Location</span>
+            <span><strong>💳</strong>Services</span>
+          </div>
 
-      <div class="wooshippy-tracking__message" data-wooshippy-tracking-message hidden></div>
-      <div class="wooshippy-tracking__result" data-wooshippy-tracking-result hidden></div>
-    </div>
+          <form class="wooshippy-tracking__form" data-wooshippy-tracking-form>
+            <div class="wooshippy-tracking__field wooshippy-tracking__field--full"><label class="wooshippy-tracking__label" for="wooshippy-tracking-number">Tracking ID</label><input class="wooshippy-tracking__input" type="text" id="wooshippy-tracking-number" name="tracking_number" value="34AP123456789" required></div>
+            <div class="wooshippy-tracking__field"><label class="wooshippy-tracking__label" for="wooshippy-carrier">Carrier<span>optional unless your provider requires it</span></label><input class="wooshippy-tracking__input" type="text" id="wooshippy-carrier" name="carrier" value="Canada Post"></div>
+            <button class="wooshippy-tracking__button" type="submit" data-wooshippy-submit>Track now <span aria-hidden="true">→</span></button>
+          </form>
+
+          <div class="wooshippy-tracking__state wooshippy-tracking__state--empty" data-wooshippy-empty><strong>Recent tracking will appear here.</strong><span>Use this MVP to validate API lookups, delivery milestones, route placeholders, and customer-facing order status.</span></div>
+          <div class="wooshippy-tracking__message" data-wooshippy-tracking-message role="status" aria-live="polite" hidden></div>
+        </div>
+
+        <div class="wooshippy-tracking__result" data-wooshippy-tracking-result hidden></div>
+      </div>
+    </section>
   </main>
 
   <script>
-    window.wooshippyTracking = {
-      endpoint: "/mock-track",
-      nonce: "preview",
-      messages: {
-        missingTrackingNumber: "Enter a tracking number.",
-        requestFailed: "Tracking lookup failed. Please try again."
-      }
-    };
-
+    window.wooshippyTracking = { endpoint:"/mock-track", nonce:"preview", messages:{ missingTrackingNumber:"Enter a tracking number.", requestFailed:"Tracking lookup failed. Please try again.", loading:"Loading tracking details..." } };
     var nativeFetch = window.fetch.bind(window);
     window.fetch = function (url, options) {
       if (String(url).indexOf("/mock-track") !== -1) {
         return new Promise(function (resolve) {
           window.setTimeout(function () {
-            resolve(new Response(JSON.stringify({
-              success: true,
-              tracking_number: JSON.parse(options.body).tracking_number,
-              carrier: JSON.parse(options.body).carrier || "Canada Post",
-              status: "In transit",
-              destination: "Toronto, ON",
-              service: "Expedited Parcel",
-              public_url: "https://example.com/tracking/WSHIPPY12345",
-              events: [
-                {
-                  status: "Package departed sorting facility",
-                  datetime: "Jul 5, 2026, 2:40 PM",
-                  location: "Mississauga, ON",
-                  carrier: "Canada Post"
-                },
-                {
-                  status: "Package processed",
-                  datetime: "Jul 5, 2026, 9:15 AM",
-                  location: "Toronto, ON",
-                  carrier: "Canada Post"
-                },
-                {
-                  status: "Shipping label created",
-                  datetime: "Jul 4, 2026, 6:22 PM",
-                  location: "Merchant warehouse",
-                  carrier: "Wooshippy"
-                }
-              ]
-            }), {
-              status: 200,
-              headers: {
-                "Content-Type": "application/json"
-              }
-            }));
+            resolve(new Response(JSON.stringify({ success:true, tracking_number:JSON.parse(options.body).tracking_number, carrier:JSON.parse(options.body).carrier || "Canada Post", status:"Out for delivery", destination:"Toronto, ON", service:"Expedited Parcel", public_url:"https://example.com/tracking/34AP123456789", events:[ { status:"Courier is approaching the destination", datetime:"Jul 6, 2026, 4:15 PM", location:"Toronto, ON", carrier:"Canada Post" }, { status:"Package departed sorting facility", datetime:"Jul 6, 2026, 2:40 PM", location:"Mississauga, ON", carrier:"Canada Post" }, { status:"Shipping label created", datetime:"Jul 5, 2026, 6:22 PM", location:"Merchant warehouse", carrier:"Wooshippy" } ] }), { status:200, headers:{ "Content-Type":"application/json" } }));
           }, 450);
         });
       }
-
       return nativeFetch(url, options);
     };
   </script>
   <script src="../public/js/tracking.js"></script>
 </body>
 </html>
-
